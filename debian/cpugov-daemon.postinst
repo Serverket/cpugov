@@ -1,0 +1,25 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    configure)
+        # Reload D-Bus to pick up new system service
+        if command -v dbus-send > /dev/null 2>&1; then
+            dbus-send --system --type=method_call \
+                --dest=org.freedesktop.DBus \
+                /org/freedesktop/DBus \
+                org.freedesktop.DBus.ReloadConfig 2>/dev/null || true
+        fi
+
+        # Enable and start the systemd service
+        if [ -d /run/systemd/system ]; then
+            systemctl daemon-reload
+            systemctl enable cpugov-daemon.service
+            systemctl start cpugov-daemon.service
+        fi
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

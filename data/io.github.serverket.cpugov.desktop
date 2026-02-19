@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=CPU Governor
+Comment=Control your CPU frequency scaling governor
+Exec=cpugov-gtk
+Icon=io.github.serverket.cpugov
+Terminal=false
+Type=Application
+Categories=System;Monitor;Settings;
+Keywords=cpu;governor;performance;powersave;frequency;
+StartupNotify=true

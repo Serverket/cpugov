@@ -1,0 +1,88 @@
+# Simplified Chinese translations for cpugov.
+# Copyright (C) 2026 Manuel "Serverket" Hernandez
+# This file is distributed under the same license as the cpugov package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: cpugov 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-19 13:00-0400\n"
+"PO-Revision-Date: 2026-02-19 13:00-0400\n"
+"Last-Translator: \n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/window.py src/application.py
+msgid "CPU Governor"
+msgstr "CPU 调速器"
+
+#: src/application.py
+msgid "Control your CPU frequency scaling governor"
+msgstr "控制 CPU 频率调节策略"
+
+#: src/application.py
+msgid "CPUGov Contributors"
+msgstr "CPUGov 贡献者"
+
+#: src/application.py
+msgid "© 2026 CPUGov Contributors"
+msgstr "© 2026 CPUGov 贡献者"
+
+#: src/window.py
+msgid "Connecting…"
+msgstr "正在连接…"
+
+#: src/window.py
+msgid "Reaching the CPU Governor daemon"
+msgstr "正在连接 CPU 调速器守护进程"
+
+#: src/window.py
+msgid "Connection Error"
+msgstr "连接错误"
+
+#: src/window.py
+msgid "Retry"
+msgstr "重试"
+
+#: src/window.py
+msgid "Governor"
+msgstr "调速器"
+
+#: src/window.py
+msgid "Processor"
+msgstr "处理器"
+
+#: src/window.py
+msgid "Model"
+msgstr "型号"
+
+#: src/window.py
+msgid "Cores"
+msgstr "核心数"
+
+#: src/window.py
+msgid "Frequency Range"
+msgstr "频率范围"
+
+#: src/window.py
+msgid "Per-Core Status"
+msgstr "单核状态"
+
+#: src/window.py
+msgid "Failed to Set Governor"
+msgstr "设置调速器失败"
+
+#: src/window.py
+msgid "OK"
+msgstr "确定"
+
+#: src/window.py
+msgid "%(count)d cores (online: %(online)s)"
+msgstr "%(count)d 核心 (在线: %(online)s)"
+
+#: src/window.py
+msgid "Core %s"
+msgstr "核心 %s"

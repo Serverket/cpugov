@@ -1,0 +1,6 @@
+# List of translatable files
+data/io.github.serverket.cpugov.desktop
+data/io.github.serverket.cpugov.metainfo.xml
+data/io.github.serverket.cpugov.gschema.xml
+src/window.py
+src/application.py

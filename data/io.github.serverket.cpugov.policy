@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+  "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+  "https://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+
+<!--
+  SPDX-License-Identifier: GPL-3.0-or-later
+  Polkit policy for CPUGov — CPU Governor Control
+-->
+
+<policyconfig>
+
+  <vendor>CPUGov</vendor>
+  <vendor_url>https://github.com/Serverket/cpugov</vendor_url>
+  <icon_name>io.github.serverket.cpugov</icon_name>
+
+  <action id="io.github.serverket.cpugov.set-governor">
+    <description>Change CPU frequency governor</description>
+    <description xml:lang="es">Cambiar el gobernador de frecuencia de CPU</description>
+    <message>Authentication is required to change the CPU frequency governor</message>
+    <message xml:lang="es">Se requiere autenticación para cambiar el gobernador de frecuencia de CPU</message>
+    <defaults>
+      <!-- Active local sessions in admin/sudo/wheel group: auto-allow -->
+      <allow_any>auth_admin</allow_any>
+      <allow_inactive>auth_admin</allow_inactive>
+      <allow_active>auth_admin_keep</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.imply">
+      org.freedesktop.systemd1.manage-units
+    </annotate>
+  </action>
+
+</policyconfig>

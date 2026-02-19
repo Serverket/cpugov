@@ -1,0 +1,88 @@
+# Portuguese translations for cpugov.
+# Copyright (C) 2026 Manuel "Serverket" Hernandez
+# This file is distributed under the same license as the cpugov package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: cpugov 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-19 13:00-0400\n"
+"PO-Revision-Date: 2026-02-19 13:00-0400\n"
+"Last-Translator: \n"
+"Language-Team: Portuguese\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/window.py src/application.py
+msgid "CPU Governor"
+msgstr "Governador de CPU"
+
+#: src/application.py
+msgid "Control your CPU frequency scaling governor"
+msgstr "Controle o governador de escalonamento de frequência da CPU"
+
+#: src/application.py
+msgid "CPUGov Contributors"
+msgstr "Colaboradores do CPUGov"
+
+#: src/application.py
+msgid "© 2026 CPUGov Contributors"
+msgstr "© 2026 Colaboradores do CPUGov"
+
+#: src/window.py
+msgid "Connecting…"
+msgstr "Conectando…"
+
+#: src/window.py
+msgid "Reaching the CPU Governor daemon"
+msgstr "Contactando o serviço do Governador de CPU"
+
+#: src/window.py
+msgid "Connection Error"
+msgstr "Erro de conexão"
+
+#: src/window.py
+msgid "Retry"
+msgstr "Tentar novamente"
+
+#: src/window.py
+msgid "Governor"
+msgstr "Governador"
+
+#: src/window.py
+msgid "Processor"
+msgstr "Processador"
+
+#: src/window.py
+msgid "Model"
+msgstr "Modelo"
+
+#: src/window.py
+msgid "Cores"
+msgstr "Núcleos"
+
+#: src/window.py
+msgid "Frequency Range"
+msgstr "Faixa de frequência"
+
+#: src/window.py
+msgid "Per-Core Status"
+msgstr "Status por núcleo"
+
+#: src/window.py
+msgid "Failed to Set Governor"
+msgstr "Falha ao definir o governador"
+
+#: src/window.py
+msgid "OK"
+msgstr "OK"
+
+#: src/window.py
+msgid "%(count)d cores (online: %(online)s)"
+msgstr "%(count)d núcleos (online: %(online)s)"
+
+#: src/window.py
+msgid "Core %s"
+msgstr "Núcleo %s"

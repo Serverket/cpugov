@@ -1,0 +1,1 @@
+option('daemon', type: 'boolean', value: true, description: 'Build the daemon')

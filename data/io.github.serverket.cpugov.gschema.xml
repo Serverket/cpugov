@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="cpugov">
+
+  <schema id="io.github.serverket.cpugov" path="/io/github/serverket/cpugov/">
+
+    <key name="refresh-interval" type="i">
+      <default>2</default>
+      <summary>Refresh interval in seconds</summary>
+      <description>How often to poll CPU frequency and governor data, in seconds.</description>
+    </key>
+
+    <key name="show-all-cores" type="b">
+      <default>true</default>
+      <summary>Show all CPU cores</summary>
+      <description>Whether to show per-core governor and frequency details.</description>
+    </key>
+
+    <key name="window-width" type="i">
+      <default>480</default>
+      <summary>Window width</summary>
+      <description>Remember the window width.</description>
+    </key>
+
+    <key name="window-height" type="i">
+      <default>640</default>
+      <summary>Window height</summary>
+      <description>Remember the window height.</description>
+    </key>
+
+  </schema>
+
+</schemalist>

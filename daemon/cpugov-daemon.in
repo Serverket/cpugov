@@ -1,0 +1,14 @@
+#!@PYTHON@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Launcher script for cpugov-daemon
+
+import sys
+import os
+
+# Add the daemon module directory to the path
+sys.path.insert(0, os.path.join('@LIBEXECDIR@', 'cpugov'))
+
+from cpugov_daemon import main
+
+if __name__ == '__main__':
+    main()

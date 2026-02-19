@@ -1,0 +1,32 @@
+# Build artifacts
+builddir/
+_build/
+.flatpak-builder/
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Translation binaries
+*.mo
+*.gmo
+po/*.pot
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+
+# Local configuration
+*.user
+*.suo
+
+# Virtual environments
+venv/
+env/
+.venv/

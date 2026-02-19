@@ -1,0 +1,40 @@
+#!@PYTHON@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Launcher script for CPUGov GTK application
+
+import gettext
+import locale
+import os
+import sys
+import signal
+
+# Set the package data directory
+pkgdatadir = '@PKGDATADIR@'
+localedir = '@LOCALE_DIR@'
+sys.path.insert(1, pkgdatadir)
+
+# Initialize gettext
+locale.bindtextdomain('cpugov', localedir)
+locale.textdomain('cpugov')
+gettext.bindtextdomain('cpugov', localedir)
+gettext.textdomain('cpugov')
+
+# Allow Ctrl+C to work
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+if __name__ == '__main__':
+    import gi
+
+    gi.require_version('Gtk', '4.0')
+    gi.require_version('Adw', '1')
+
+    from gi.repository import Gio
+
+    # Load GResource if available
+    gresource_path = os.path.join(pkgdatadir, 'cpugov.gresource')
+    if os.path.exists(gresource_path):
+        resource = Gio.Resource.load(gresource_path)
+        resource._register()
+
+    from cpugov.main import main
+    sys.exit(main())

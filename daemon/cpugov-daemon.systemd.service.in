@@ -1,0 +1,22 @@
+[Unit]
+Description=CPU Governor Control Daemon
+Documentation=https://github.com/Serverket/cpugov
+
+[Service]
+Type=dbus
+BusName=@APP_ID@
+ExecStart=@LIBEXECDIR@/cpugov-daemon
+Restart=on-failure
+RestartSec=5
+
+# Security hardening
+ProtectHome=yes
+ProtectSystem=strict
+ReadWritePaths=/sys/devices/system/cpu
+StateDirectory=cpugov
+PrivateTmp=yes
+NoNewPrivileges=no
+CapabilityBoundingSet=CAP_SYS_ADMIN
+
+[Install]
+WantedBy=multi-user.target
