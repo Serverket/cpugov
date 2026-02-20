@@ -73,6 +73,11 @@
   </keywords>
 
   <releases>
+    <release version="0.1.1" date="2026-02-20">
+      <description>
+        <p>Fixes for Flatpak build system and read-only filesystem paths.</p>
+      </description>
+    </release>
     <release version="0.1.0" date="2026-02-19">
       <description>
         <p>Initial release</p>
