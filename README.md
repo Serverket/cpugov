@@ -60,7 +60,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now cpugov-daemon
 
 # Or install the .deb package (Debian/Ubuntu)
-sudo dpkg -i cpugov-daemon_0.1.1-1_all.deb
+sudo dpkg -i cpugov-daemon_0.1.2-1_all.deb
 ```
 
 ### Step 2: Install the GUI
@@ -119,7 +119,7 @@ flatpak run io.github.serverket.cpugov
 
 ```bash
 dpkg-buildpackage -us -uc -b
-sudo dpkg -i ../cpugov-daemon_0.1.0-1_all.deb
+sudo dpkg -i ../cpugov-daemon_0.1.2-1_all.deb
 ```
 
 ## License

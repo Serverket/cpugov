@@ -73,6 +73,11 @@
   </keywords>
 
   <releases>
+    <release version="0.1.2" date="2026-02-20">
+      <description>
+        <p>Consistent release with all version numbers updated.</p>
+      </description>
+    </release>
     <release version="0.1.1" date="2026-02-20">
       <description>
         <p>Fixes for Flatpak build system and read-only filesystem paths.</p>
@@ -92,7 +97,7 @@
 
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/Serverket/cpugov/v0.1.0/screenshots/main-window.png</image>
+      <image>https://raw.githubusercontent.com/Serverket/cpugov/v0.1.2/screenshots/main-window.png</image>
       <caption>Main window showing CPU governor controls</caption>
     </screenshot>
   </screenshots>
