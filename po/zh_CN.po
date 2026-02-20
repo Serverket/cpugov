@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: cpugov 0.1.2\n"
+"Project-Id-Version: cpugov 0.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-19 13:00-0400\n"
 "PO-Revision-Date: 2026-02-19 13:00-0400\n"

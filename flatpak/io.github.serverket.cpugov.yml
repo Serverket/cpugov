@@ -20,6 +20,6 @@ modules:
     sources:
       - type: git
         url: https://github.com/Serverket/cpugov.git
-        tag: v0.1.2
+        tag: v0.2.0
       # - type: dir
       #   path: ..

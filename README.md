@@ -45,81 +45,48 @@ When you select a governor, the daemon saves your choice to `/var/lib/cpugov/con
 
 ## Installation
 
-### Step 1: Install the system daemon
+### Step 1: Install the Daemon (Required)
 
-The daemon must be installed on the host system (outside the Flatpak sandbox):
+The system daemon powers the app and must be installed on your host system. We provide an automated installer script:
 
 ```bash
-# Build and install from source
-meson setup builddir
-meson compile -C builddir
+curl -sS https://raw.githubusercontent.com/Serverket/cpugov/main/daemon/install.sh | sudo bash
+```
+
+Alternatively, you can download the `.deb` package from the [Releases](https://github.com/Serverket/cpugov/releases) page (Debian/Ubuntu) or build manually:
+```bash
+meson setup builddir && meson compile -C builddir
 sudo meson install -C builddir
-
-# Enable the daemon to start on boot
-sudo systemctl daemon-reload
 sudo systemctl enable --now cpugov-daemon
-
-# Or install the .deb package (Debian/Ubuntu)
-sudo dpkg -i cpugov-daemon_0.1.2-1_all.deb
 ```
 
 ### Step 2: Install the GUI
 
-**From Flathub (recommended):**
+The recommended way to install the CPU Governor GUI is via Flathub:
+
 ```bash
 flatpak install flathub io.github.serverket.cpugov
 ```
 
-**From source:**
-```bash
-meson setup builddir
-meson compile -C builddir
-sudo meson install -C builddir
-cpugov-gtk
-```
-
 ## Development
 
-### Dependencies
+**Prerequisites:** Python 3, PyGObject, D-Bus, Polkit, systemd (Daemon), GTK4 & libadwaita (GUI).
 
-**Daemon:**
-- Python 3
-- python3-dbus
-- python3-gi (PyGObject)
-- polkit
-- systemd
-
-**GUI:**
-- Python 3
-- GTK4
-- libadwaita
-- python3-gi (PyGObject)
-
-### Building
+### Building from Source
 
 ```bash
-# Full build (daemon + GUI)
+# Build and install daemon + GUI locally
 meson setup builddir
 meson compile -C builddir
 sudo meson install -C builddir
 
-# Test the daemon
+# Run the daemon service to test
 sudo systemctl start cpugov-daemon
-gdbus call --system --dest io.github.serverket.cpugov \
-  --object-path /io/github/serverket/cpugov \
-  --method io.github.serverket.cpugov.GetGovernor
 
-# Build Flatpak (GUI only)
+# Build and run the Flatpak GUI sandbox
 cd flatpak
 flatpak-builder --user --install build-dir io.github.serverket.cpugov.yml
 flatpak run io.github.serverket.cpugov
-```
-
-### Building the Debian package
-
-```bash
-dpkg-buildpackage -us -uc -b
-sudo dpkg -i ../cpugov-daemon_0.1.2-1_all.deb
 ```
 
 ## License
