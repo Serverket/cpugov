@@ -59,8 +59,23 @@ if get_option('daemon')
   )
 endif
 
-# Icon
+# Icons — scalable SVG
 install_data(
   'io.github.serverket.cpugov.svg',
   install_dir: datadir / 'icons' / 'hicolor' / 'scalable' / 'apps',
+)
+
+# Icons — PNG sizes (required for AppStream / Flathub compliance)
+foreach size : ['48x48', '64x64', '128x128', '256x256']
+  install_data(
+    'icons' / 'hicolor' / size / 'apps' / 'io.github.serverket.cpugov.png',
+    install_dir: datadir / 'icons' / 'hicolor' / size / 'apps',
+  )
+endforeach
+
+# Refresh icon cache and update desktop/appstream databases after install
+gnome.post_install(
+  glib_compile_schemas: true,
+  gtk_update_icon_cache: true,
+  update_desktop_database: true,
 )

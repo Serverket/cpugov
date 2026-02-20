@@ -1,0 +1,89 @@
+name: Build Flatpak Bundle
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-flatpak:
+    name: Build Flatpak Bundle
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install flatpak + flatpak-builder
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatpak flatpak-builder
+
+      - name: Add Flathub remote
+        run: |
+          sudo flatpak remote-add --system --if-not-exists flathub \
+            https://dl.flathub.org/repo/flathub.flatpakrepo
+
+      - name: Install GNOME SDK
+        run: |
+          sudo flatpak install -y --system flathub \
+            org.gnome.Platform//47 \
+            org.gnome.Sdk//47
+
+      - name: Write local-source manifest
+        # Build from the current checkout (not git tag) for CI
+        run: |
+          cat > flatpak-ci.yml << 'EOF'
+          id: io.github.serverket.cpugov
+          runtime: org.gnome.Platform
+          runtime-version: '49'
+          sdk: org.gnome.Sdk
+          command: cpugov-gtk
+          finish-args:
+            - --share=ipc
+            - --socket=fallback-x11
+            - --socket=wayland
+            - --system-talk-name=io.github.serverket.cpugov
+          modules:
+            - name: cpugov-gtk
+              buildsystem: meson
+              config-opts:
+                - -Ddaemon=false
+              sources:
+                - type: dir
+                  path: .
+          EOF
+
+      - name: Build Flatpak
+        run: |
+          mkdir -p dist
+          flatpak-builder \
+            --repo=repo \
+            --force-clean \
+            --system \
+            build-flatpak \
+            flatpak-ci.yml
+
+      - name: Export bundle
+        run: |
+          flatpak build-bundle repo \
+            dist/io.github.serverket.cpugov.flatpak \
+            io.github.serverket.cpugov
+
+      - name: Show bundle
+        run: ls -lh dist/
+
+      - name: Upload Flatpak artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: flatpak-bundle
+          path: dist/*.flatpak
+          retention-days: 30
+
+      - name: Attach to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.flatpak
+          fail_on_unmatched_files: true

@@ -1,37 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
   <defs>
+    <!-- Website-matching indigo → electric-blue gradient (matches brand-600 → electric-500) -->
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#1a5fb4"/>
-      <stop offset="100%" stop-color="#3584e4"/>
+      <stop offset="0%"   stop-color="#4338ca"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
     </linearGradient>
+    <!-- Chip: slightly lighter, glassy feel -->
     <linearGradient id="chip" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#f6f5f4"/>
-      <stop offset="100%" stop-color="#deddda"/>
+      <stop offset="0%"   stop-color="#1e1b4b" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.95"/>
     </linearGradient>
+    <!-- Bolt: electric white → cyan, matching website accents -->
     <linearGradient id="bolt" x1="0.5" y1="0" x2="0.5" y2="1">
-      <stop offset="0%" stop-color="#f6d32d"/>
-      <stop offset="100%" stop-color="#e5a50a"/>
+      <stop offset="0%"   stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
     </linearGradient>
+    <!-- Subtle inner glow on bg -->
+    <radialGradient id="glow" cx="50%" cy="30%" r="60%">
+      <stop offset="0%"   stop-color="#818cf8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#818cf8" stop-opacity="0"/>
+    </radialGradient>
   </defs>
+
+  <!-- Background rounded square -->
   <rect x="4" y="4" width="120" height="120" rx="28" ry="28" fill="url(#bg)"/>
-  <rect x="32" y="32" width="64" height="64" rx="8" ry="8" fill="url(#chip)" stroke="#9a9996" stroke-width="1.5"/>
-  <rect x="44" y="24" width="6" height="12" rx="2" fill="#c0bfbc"/>
-  <rect x="56" y="24" width="6" height="12" rx="2" fill="#c0bfbc"/>
-  <rect x="68" y="24" width="6" height="12" rx="2" fill="#c0bfbc"/>
-  <rect x="80" y="24" width="6" height="12" rx="2" fill="#c0bfbc"/>
-  <rect x="44" y="92" width="6" height="12" rx="2" fill="#c0bfbc"/>
-  <rect x="56" y="92" width="6" height="12" rx="2" fill="#c0bfbc"/>
-  <rect x="68" y="92" width="6" height="12" rx="2" fill="#c0bfbc"/>
-  <rect x="80" y="92" width="6" height="12" rx="2" fill="#c0bfbc"/>
-  <rect x="24" y="44" width="12" height="6" rx="2" fill="#c0bfbc"/>
-  <rect x="24" y="56" width="12" height="6" rx="2" fill="#c0bfbc"/>
-  <rect x="24" y="68" width="12" height="6" rx="2" fill="#c0bfbc"/>
-  <rect x="24" y="80" width="12" height="6" rx="2" fill="#c0bfbc"/>
-  <rect x="92" y="44" width="12" height="6" rx="2" fill="#c0bfbc"/>
-  <rect x="92" y="56" width="12" height="6" rx="2" fill="#c0bfbc"/>
-  <rect x="92" y="68" width="12" height="6" rx="2" fill="#c0bfbc"/>
-  <rect x="92" y="80" width="12" height="6" rx="2" fill="#c0bfbc"/>
+  <!-- Inner glow overlay -->
+  <rect x="4" y="4" width="120" height="120" rx="28" ry="28" fill="url(#glow)"/>
+
+  <!-- CPU chip body -->
+  <rect x="32" y="32" width="64" height="64" rx="10" ry="10"
+        fill="url(#chip)" stroke="#6366f1" stroke-width="1.5" stroke-opacity="0.7"/>
+
+  <!-- Chip pins — top (using indigo-tinted) -->
+  <rect x="44" y="23" width="6" height="12" rx="2" fill="#a5b4fc"/>
+  <rect x="56" y="23" width="6" height="12" rx="2" fill="#a5b4fc"/>
+  <rect x="68" y="23" width="6" height="12" rx="2" fill="#a5b4fc"/>
+  <rect x="80" y="23" width="6" height="12" rx="2" fill="#a5b4fc"/>
+  <!-- bottom -->
+  <rect x="44" y="93" width="6" height="12" rx="2" fill="#a5b4fc"/>
+  <rect x="56" y="93" width="6" height="12" rx="2" fill="#a5b4fc"/>
+  <rect x="68" y="93" width="6" height="12" rx="2" fill="#a5b4fc"/>
+  <rect x="80" y="93" width="6" height="12" rx="2" fill="#a5b4fc"/>
+  <!-- left -->
+  <rect x="23" y="44" width="12" height="6" rx="2" fill="#a5b4fc"/>
+  <rect x="23" y="56" width="12" height="6" rx="2" fill="#a5b4fc"/>
+  <rect x="23" y="68" width="12" height="6" rx="2" fill="#a5b4fc"/>
+  <rect x="23" y="80" width="12" height="6" rx="2" fill="#a5b4fc"/>
+  <!-- right -->
+  <rect x="93" y="44" width="12" height="6" rx="2" fill="#a5b4fc"/>
+  <rect x="93" y="56" width="12" height="6" rx="2" fill="#a5b4fc"/>
+  <rect x="93" y="68" width="12" height="6" rx="2" fill="#a5b4fc"/>
+  <rect x="93" y="80" width="12" height="6" rx="2" fill="#a5b4fc"/>
+
+  <!-- Lightning bolt (same path, white/electric gradient) -->
   <path d="M 68 42 L 56 66 L 64 66 L 60 86 L 76 58 L 66 58 Z"
-        fill="url(#bolt)" stroke="#c64600" stroke-width="1" stroke-linejoin="round"/>
+        fill="url(#bolt)"
+        filter="drop-shadow(0 0 6px rgba(56,189,248,0.8))"/>
 </svg>
