@@ -9,7 +9,7 @@ A modern GTK4/libadwaita application for controlling your Linux CPU frequency sc
 ![Platform](https://img.shields.io/badge/platform-Linux-green)
 
 <p align="center">
-  <img src="screenshots/main-window.png" width="100%">
+  <img src="screenshots/main-window.png" width="50%">
 </p>
 
 ## Features
@@ -20,53 +20,41 @@ A modern GTK4/libadwaita application for controlling your Linux CPU frequency sc
 - **Secure privilege management** — Uses Polkit for authorization, no running the GUI as root
 - **Modern GNOME design** — Built with GTK4 and libadwaita, supports dark/light themes
 - **Multilanguage** — English, Spanish, Portuguese, Japanese, Chinese, and Italian
-- **Flatpak-ready** — Sandboxed GUI with host-side daemon architecture
 
 ## Architecture
 
-CPU Governor uses a two-component architecture:
+CPU Governor follows a secure system service architecture:
+
+```mermaid
+graph TD
+    User["GTK4 GUI (User context)"] -- "D-Bus System Bus" --> Daemon["cpugov-daemon (System Service)"]
+    Daemon -- "Writes/Reads" --> sysfs["CPU scaling governor (/sys)"]
+    Daemon -- "Saves/Loads" --> Config["/var/lib/cpugov/config.json"]
+    Polkit["Polkit"] -- "Authorizes Methods" --> Daemon
+```
 
 | Component | Description |
 |-----------|-------------|
-| **cpugov-daemon** | A D-Bus system service (runs as root) that reads/writes CPU governors via sysfs |
-| **cpugov-gtk** | A GTK4/libadwaita GUI (runs as user, optionally in Flatpak sandbox) that communicates with the daemon via D-Bus |
-
-```
-[GTK4 GUI] ──D-Bus──▶ [cpugov-daemon] ──sysfs──▶ [/sys/.../scaling_governor]
-                            │                          ▲
-                       [Polkit Auth]             [Boot restore]
-                                                       │
-                                          [/var/lib/cpugov/config.json]
-```
+| **cpugov-daemon** | A D-Bus system service (runs as root) that manages CPU governors via sysfs |
+| **cpugov-gtk** | A GTK4/libadwaita GUI (runs as user) that communicates with the daemon via D-Bus |
 
 ### Persistence
 
-When you select a governor, the daemon saves your choice to `/var/lib/cpugov/config.json`. On the next boot, `cpugov-daemon.service` reads the config and restores the governor automatically — no manual action needed.
+When you select a governor, the daemon saves your choice to `/var/lib/cpugov/config.json`. On the next boot, `cpugov-daemon.service` automatically restores your preferred setting.
 
 ## Installation
 
-### Step 1: Install the Daemon (Required)
+### Native Installation (Recommended)
 
-The system daemon powers the app and must be installed on your host system. We provide an automated installer script:
+The easiest way to install CPU Governor on Debian-based systems (Debian, Ubuntu, Parrot, etc.) is using the all-in-one `.deb` package which includes both the GUI and the system daemon:
 
-```bash
-curl -sS https://raw.githubusercontent.com/Serverket/cpugov/main/daemon/install.sh | sudo bash
-```
+1. Download the latest `.deb` from the [Releases](https://github.com/Serverket/cpugov/releases) page.
+2. Install it using apt:
+   ```bash
+   sudo apt install ./cpugov_0.3.0-1_all.deb
+   ```
 
-Alternatively, you can download the `.deb` package from the [Releases](https://github.com/Serverket/cpugov/releases) page (Debian/Ubuntu) or build manually:
-```bash
-meson setup builddir && meson compile -C builddir
-sudo meson install -C builddir
-sudo systemctl enable --now cpugov-daemon
-```
 
-### Step 2: Install the GUI
-
-The recommended way to install the CPU Governor GUI is via Flathub:
-
-```bash
-flatpak install flathub io.github.serverket.cpugov
-```
 
 ## Development
 
@@ -82,11 +70,6 @@ sudo meson install -C builddir
 
 # Run the daemon service to test
 sudo systemctl start cpugov-daemon
-
-# Build and run the Flatpak GUI sandbox
-cd flatpak
-flatpak-builder --user --install build-dir io.github.serverket.cpugov.yml
-flatpak run io.github.serverket.cpugov
 ```
 
 ## License

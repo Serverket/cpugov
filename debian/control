@@ -1,7 +1,7 @@
-Source: cpugov-daemon
+Source: cpugov
 Section: admin
 Priority: optional
-Maintainer: Manuel "Serverket" Hernandez <serverket@protonmail.com>
+Maintainer: Manuel "Serverket" Hernandez <serverket@mailfence.com>
 Build-Depends: debhelper-compat (= 13),
                meson,
                ninja-build,
@@ -16,13 +16,15 @@ Homepage: https://github.com/Serverket/cpugov
 Vcs-Browser: https://github.com/Serverket/cpugov.git
 Vcs-Git: https://github.com/Serverket/cpugov.git
 
-Package: cpugov-daemon
+Package: cpugov
 Architecture: all
 Depends: ${misc:Depends},
          python3,
          python3-dbus,
          python3-gi,
          gir1.2-glib-2.0,
+         gir1.2-gtk-4.0,
+         gir1.2-adw-1,
          polkitd,
          dbus,
          systemd
@@ -30,6 +32,5 @@ Description: CPU Governor Control Daemon
  A lightweight D-Bus system service that provides authorized access
  to CPU frequency scaling governor settings via Polkit.
  .
- This daemon is required by the CPUGov GUI application (available as
- a Flatpak from Flathub) to change CPU governors with proper
- privilege management.
+ This daemon is required by the CPUGov GUI application to change CPU governors
+ with proper privilege management.

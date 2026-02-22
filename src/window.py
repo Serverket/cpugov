@@ -63,6 +63,13 @@ class CPUGovWindow(Adw.ApplicationWindow):
 
         # Save window size on close
         self.connect("close-request", self._on_close_request)
+        
+        # Focus management: grab focus when mapped
+        self.connect("map", self._on_map)
+
+    def _on_map(self, widget):
+        """Called when the window is mapped; ensure focus is correct."""
+        GLib.timeout_add(100, self._ensure_focus)
 
     def _on_close_request(self, window):
         """Save window dimensions before closing."""
@@ -137,7 +144,7 @@ class CPUGovWindow(Adw.ApplicationWindow):
         self._main_box.append(status)
 
     def _build_error_view(self, message):
-        """Show an error message with retry option."""
+        """Show an error message with retry option and install instructions."""
         self._clear_main()
 
         status = Adw.StatusPage(
@@ -146,12 +153,39 @@ class CPUGovWindow(Adw.ApplicationWindow):
             icon_name="dialog-error-symbolic",
         )
 
-        retry_btn = Gtk.Button(label=_("Retry"))
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=24)
+        vbox.set_halign(Gtk.Align.CENTER)
+        vbox.set_margin_top(12)
+
+        # Installation command group
+        install_group = Adw.PreferencesGroup(
+            title=_("To install the required host daemon, run:")
+        )
+        
+        cmd_row = Adw.ActionRow(
+            subtitle="curl -sS https://raw.githubusercontent.com/Serverket/cpugov/master/daemon/install.sh | sudo bash"
+        )
+        cmd_row.add_css_class("property")
+        
+        # Copy button
+        copy_btn = Gtk.Button(icon_name="edit-copy-symbolic", valign=Gtk.Align.CENTER)
+        copy_btn.set_tooltip_text(_("Copy to clipboard"))
+        copy_btn.add_css_class("flat")
+        copy_btn.connect("clicked", lambda btn: self.get_clipboard().set("curl -sS https://raw.githubusercontent.com/Serverket/cpugov/master/daemon/install.sh | sudo bash"))
+        cmd_row.add_suffix(copy_btn)
+
+        install_group.add(cmd_row)
+        vbox.append(install_group)
+
+        # Retry button
+        retry_btn = Gtk.Button(label=_("Retry Connection"))
         retry_btn.set_halign(Gtk.Align.CENTER)
         retry_btn.add_css_class("suggested-action")
         retry_btn.add_css_class("pill")
         retry_btn.connect("clicked", self._on_retry)
-        status.set_child(retry_btn)
+        vbox.append(retry_btn)
+
+        status.set_child(vbox)
 
         self._main_box.append(status)
 
@@ -249,6 +283,18 @@ class CPUGovWindow(Adw.ApplicationWindow):
         self._available_governors = governors
         self._rebuild_governor_buttons()
         self._request_refresh()
+        
+        # Explicitly grab focus after a short delay once everything is built
+        GLib.timeout_add(100, self._ensure_focus)
+
+    def _ensure_focus(self):
+        """Force the window and the current governor button to have focus."""
+        self.present()
+        if self._current_governor in self._governor_buttons:
+            btn = self._governor_buttons[self._current_governor]
+            btn.grab_focus()
+            self.set_default_widget(btn)
+        return False
 
     def _rebuild_governor_buttons(self):
         """Create buttons for each available governor.
@@ -263,30 +309,64 @@ class CPUGovWindow(Adw.ApplicationWindow):
             self._governor_box.remove(child)
             child = next_child
         self._governor_buttons.clear()
+        
+        # We don't reset self._current_governor here anymore to keep selection visible
 
-        # Icon mapping for known governors
+        # Icon mapping for known governors using standard GTK symbolic icons
         icons = {
-            "performance": "🚀",
-            "powersave": "🔋",
-            "ondemand": "⚡",
-            "conservative": "📉",
-            "schedutil": "🔧",
-            "userspace": "👤",
+            "performance": "power-profile-performance-symbolic",      # Lightning/Performance
+            "powersave": "battery-level-100-symbolic",    # Battery/Powersave
+            "ondemand": "media-playlist-shuffle-symbolic",# Shuffle/Ondemand
+            "conservative": "go-down-symbolic",           # Down/Conservative
+            "schedutil": "applications-system-symbolic",  # System/Schedutil
+            "userspace": "avatar-default-symbolic",       # User/Userspace
         }
 
+        first_btn = None
         for gov in self._available_governors:
-            icon = icons.get(gov, "⚙️")
-            btn = Gtk.Button(label=f"{icon}  {gov.capitalize()}")
-            btn.set_size_request(150, 44)
-            btn.connect("clicked", self._on_governor_clicked, gov)
+            icon_name = icons.get(gov, "preferences-system-symbolic")
+            
+            # Create a box to hold the icon and label
+            box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+            box.set_halign(Gtk.Align.CENTER)
+            
+            icon = Gtk.Image.new_from_icon_name(icon_name)
+            label = Gtk.Label(label=gov.capitalize())
+            
+            box.append(icon)
+            box.append(label)
+
+            btn = Gtk.ToggleButton()
+            btn.set_child(box)
+            btn.set_focus_on_click(True)
+            
+            if first_btn:
+                btn.set_group(first_btn)
+            else:
+                first_btn = btn
+                
+            btn.connect("toggled", self._on_governor_toggled, gov)
+            
+            # Highlight immediately if this is the active governor
+            if gov == self._current_governor:
+                btn.handler_block_by_func(self._on_governor_toggled)
+                btn.set_active(True)
+                btn.add_css_class("suggested-action")
+                btn.handler_unblock_by_func(self._on_governor_toggled)
+                self.set_default_widget(btn)
+
             self._governor_box.append(btn)
             self._governor_buttons[gov] = btn
 
-    def _on_governor_clicked(self, button, governor):
-        """Handle governor button click."""
+    def _on_governor_toggled(self, button, governor):
+        """Handle governor button toggle."""
+        # Only care about the button becoming active
+        if not button.get_active():
+            return
+            
+        # Don't re-apply if it's already the current governor
         if governor == self._current_governor:
-            return  # Already active, nothing to do
-
+            return
         # Request the change via D-Bus
         self._dbus.set_governor(governor, self._on_set_governor_result)
 
@@ -309,16 +389,29 @@ class CPUGovWindow(Adw.ApplicationWindow):
         self._update_governor_ui(governor)
 
     def _update_governor_ui(self, governor):
-        """Update button styles: active = accent highlight, others = flat."""
+        """Update button states to match the actual governor."""
+        if governor == self._current_governor:
+            return
+            
         self._current_governor = governor
 
-        for gov, btn in self._governor_buttons.items():
-            if gov == governor:
-                # Active: accent color fill
-                btn.add_css_class("suggested-action")
-            else:
-                # Inactive: default outlined style (visibly clickable)
-                btn.remove_css_class("suggested-action")
+        if governor in self._governor_buttons:
+            for gov, btn in self._governor_buttons.items():
+                if gov == governor:
+                    btn.handler_block_by_func(self._on_governor_toggled)
+                    btn.set_active(True)
+                    btn.add_css_class("suggested-action")
+                    btn.handler_unblock_by_func(self._on_governor_toggled)
+                    
+                    # Ensure the window has a valid focus widget
+                    self.set_default_widget(btn)
+                    if not self.get_focus():
+                        btn.grab_focus()
+                else:
+                    btn.handler_block_by_func(self._on_governor_toggled)
+                    btn.remove_css_class("suggested-action")
+                    btn.set_active(False)
+                    btn.handler_unblock_by_func(self._on_governor_toggled)
 
     # ── Refresh / Polling ─────────────────────────────────────────
 

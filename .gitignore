@@ -1,7 +1,7 @@
 # Build artifacts
 builddir/
 _build/
-.flatpak-builder/
+
 build/
 dist/
 *.egg-info/
@@ -30,3 +30,20 @@ po/*.pot
 venv/
 env/
 .venv/
+
+# Debian packaging artifacts
+obj-*/
+debian/cpugov/
+debian/.debhelper/
+debian/debhelper-build-stamp
+debian/files
+debian/*.substvars
+debian/*.log
+*.deb
+*.buildinfo
+*.changes
+*.tar.gz
+*.dsc
+
+# Internal scripts
+update_version.sh

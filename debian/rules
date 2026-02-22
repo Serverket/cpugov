@@ -5,9 +5,14 @@
 	dh $@
 
 override_dh_auto_configure:
-	dh_auto_configure -- -Dgui=false
+	dh_auto_configure -- -Ddaemon=true
 
 override_dh_auto_install:
 	dh_auto_install
-	# Ensure systemd service is in the right place
-	mkdir -p debian/cpugov-daemon/lib/systemd/system/
+	# Move systemd unit from /usr/lib/systemd/system to /lib/systemd/system
+	# This is required for standard Debian packaging compatibility
+	if [ -d debian/cpugov/usr/lib/systemd/system ]; then \
+		mkdir -p debian/cpugov/lib/systemd/system; \
+		mv debian/cpugov/usr/lib/systemd/system/* debian/cpugov/lib/systemd/system/; \
+		rm -rf debian/cpugov/usr/lib/systemd; \
+	fi
