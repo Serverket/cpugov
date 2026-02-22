@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: cpugov 0.2.0\n"
+"Project-Id-Version: cpugov 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-19 13:00-0400\n"
 "PO-Revision-Date: 2026-02-19 13:00-0400\n"
@@ -28,8 +28,8 @@ msgid "CPUGov Contributors"
 msgstr "Colaboradores do CPUGov"
 
 #: src/application.py
-msgid "© 2026 CPUGov Contributors"
-msgstr "© 2026 Colaboradores do CPUGov"
+msgid "© 2026 Manuel \"Serverket\" Hernandez and Contributors"
+msgstr "© 2026 Manuel \"Serverket\" Hernandez e Colaboradores"
 
 #: src/window.py
 msgid "Connecting…"
@@ -86,3 +86,15 @@ msgstr "%(count)d núcleos (online: %(online)s)"
 #: src/window.py
 msgid "Core %s"
 msgstr "Núcleo %s"
+
+#: src/window.py
+msgid "About CPU Governor"
+msgstr "Sobre o CPU Governor"
+
+#: src/window.py
+msgid "Quit"
+msgstr "Sair"
+
+#: src/application.py
+msgid "Manuel \"Serverket\" Hernandez"
+msgstr "Manuel \"Serverket\" Hernandez"

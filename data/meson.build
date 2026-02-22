@@ -45,11 +45,11 @@ install_data(
 # Compile schemas for testing
 gnome.compile_schemas(depend_files: 'io.github.serverket.cpugov.gschema.xml')
 
-# D-Bus system bus config (must go to /etc, not $datadir)
+# D-Bus system bus config (must go to $datadir for inotify reload)
 if get_option('daemon')
   install_data(
     'io.github.serverket.cpugov.conf',
-    install_dir: '/etc' / 'dbus-1' / 'system.d',
+    install_dir: datadir / 'dbus-1' / 'system.d',
   )
 
   # Polkit policy
@@ -65,7 +65,7 @@ install_data(
   install_dir: datadir / 'icons' / 'hicolor' / 'scalable' / 'apps',
 )
 
-# Icons — PNG sizes (required for AppStream / Flathub compliance)
+# Icons — PNG sizes (standard hicolor theme sizes)
 foreach size : ['48x48', '64x64', '128x128', '256x256']
   install_data(
     'icons' / 'hicolor' / size / 'apps' / 'io.github.serverket.cpugov.png',
