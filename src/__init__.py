@@ -2,4 +2,4 @@
 """CPUGov — CPU Governor Control Application."""
 
 APP_ID = "io.github.serverket.cpugov"
-VERSION = "0.3.0"
+VERSION = "0.3.1"

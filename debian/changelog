@@ -1,3 +1,14 @@
+cpugov (0.3.1-1) unstable; urgency=medium
+
+  * Enhanced installation lifecycle management: Implemented robust 
+    detection logic for heterogeneous deployment environments 
+    (script-based vs. package-based).
+  * Introduced coordinated fallback mechanisms to ensure configuration 
+    persistence and system state integrity during cross-method 
+    installation transitions.
+
+ -- Manuel "Serverket" Hernandez <serverket@mailfence.com>  Mon, 23 Feb 2026 17:05:00 -0400
+
 cpugov (0.3.0-1) unstable; urgency=medium
 
   * Initial release.

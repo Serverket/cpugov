@@ -73,6 +73,11 @@
   </keywords>
 
   <releases>
+    <release version="0.3.1" date="2026-02-23">
+      <description>
+        <p>Enhanced installation lifecycle management: Implemented robust detection logic for heterogeneous deployment environments (script-based vs. package-based). Introduced coordinated fallback mechanisms to ensure configuration persistence and system state integrity during cross-method installation transitions.</p>
+      </description>
+    </release>
     <release version="0.3.0" date="2026-02-20">
       <description>
         <p>Consistent release with all version numbers updated and unified .deb packaging.</p>
@@ -92,7 +97,7 @@
 
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/Serverket/cpugov/v0.3.0/screenshots/main-window.png</image>
+      <image>https://raw.githubusercontent.com/Serverket/cpugov/v0.3.1/screenshots/main-window.png</image>
       <caption>Main window showing CPU governor controls</caption>
     </screenshot>
   </screenshots>

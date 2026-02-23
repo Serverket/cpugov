@@ -51,7 +51,7 @@ The easiest way to install CPU Governor on Debian-based systems (Debian, Ubuntu,
 1. Download the latest `.deb` from the [Releases](https://github.com/Serverket/cpugov/releases) page.
 2. Install it using apt:
    ```bash
-   sudo apt install ./cpugov_0.3.0-1_all.deb
+   sudo apt install ./cpugov_0.3.1-1_all.deb
    ```
 
 
