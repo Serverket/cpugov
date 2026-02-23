@@ -16,7 +16,30 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
+# Prevent duplication: check if a Debian package is actually INSTALLED
+# We use dpkg-query to distinguish between "installed" and "removed but configured"
+if dpkg-query -W -f='${db:Status-Status}' cpugov 2>/dev/null | grep -q "^installed$"; then
+  echo -e "${RED}Error: CPU Governor is already installed via a Debian package (.deb).${NC}"
+  echo "Please uninstall it first using: sudo apt remove cpugov"
+  echo "This prevents conflicting versions between /usr and /usr/local."
+  exit 1
+fi
+
 echo "Installing CPU Governor Daemon..."
+
+# Self-Cleanup: Ensure no stale files from previous manual installs exist in /usr/local
+# We EXPLICITLY preserve /var/lib/cpugov/config.json
+echo "Cleaning up previous manual installation (preserving config)..."
+rm -f /usr/local/bin/cpugov
+rm -f /usr/local/bin/cpugov-gtk
+rm -f /usr/local/bin/cpugov-daemon
+rm -rf /usr/local/share/cpugov
+rm -f /usr/local/share/applications/io.github.serverket.cpugov.desktop
+rm -f /usr/local/share/metainfo/io.github.serverket.cpugov.metainfo.xml
+rm -f /usr/local/share/dbus-1/system.d/io.github.serverket.cpugov.conf
+rm -f /usr/local/share/polkit-1/actions/io.github.serverket.cpugov.policy
+rm -f /usr/local/lib/systemd/system/cpugov-daemon.service
+# Note: /var/lib/cpugov is NOT touched.
 
 # Check dependencies
 MISSING_DEPS=""
@@ -52,10 +75,17 @@ REPO_ROOT="$(dirname "$(dirname "$(readlink -f "$0")")")"
 if [ -d "$REPO_ROOT/.git" ] && [ -f "$REPO_ROOT/meson.build" ]; then
   echo "Detected local repository at $REPO_ROOT. Using local files for installation..."
   cp -a "$REPO_ROOT"/. "$TMP_DIR/"
+  # Remove build artifacts and other local-only files to ensure a clean build
+  rm -rf "$TMP_DIR/builddir" "$TMP_DIR/obj-x86_64-linux-gnu" "$TMP_DIR/subprojects"
 else
   echo "Cloning repository from GitHub..."
   git clone --depth 1 https://github.com/Serverket/cpugov.git "$TMP_DIR"
 fi
+
+# Ensure configuration directory exists with correct permissions
+echo "Ensuring configuration directory exists..."
+mkdir -p /var/lib/cpugov
+chmod 755 /var/lib/cpugov
 
 cd "$TMP_DIR"
 

@@ -56,6 +56,34 @@ The easiest way to install CPU Governor on Debian-based systems (Debian, Ubuntu,
 
 
 
+## Uninstallation
+
+### Option A: Remove Debian Package (.deb)
+To remove the application but keep your configuration settings:
+```bash
+sudo apt remove cpugov
+```
+To remove everything, including your configuration settings:
+```bash
+sudo apt purge cpugov
+```
+
+### Option B: Remove Manual Installation
+If you installed via the script or built from source, run these commands to remove the files:
+```bash
+sudo rm -f /usr/local/bin/cpugov /usr/local/bin/cpugov-gtk /usr/local/bin/cpugov-daemon
+sudo rm -rf /usr/local/share/cpugov
+sudo rm -f /usr/local/share/applications/io.github.serverket.cpugov.desktop
+sudo rm -f /usr/local/share/metainfo/io.github.serverket.cpugov.metainfo.xml
+sudo rm -f /usr/local/share/dbus-1/system.d/io.github.serverket.cpugov.conf
+sudo rm -f /usr/local/share/polkit-1/actions/io.github.serverket.cpugov.policy
+sudo rm -f /usr/local/lib/systemd/system/cpugov-daemon.service
+```
+To also remove your configuration settings:
+```bash
+sudo rm -rf /var/lib/cpugov
+```
+
 ## Development
 
 **Prerequisites:** Python 3, PyGObject, D-Bus, Polkit, systemd (Daemon), GTK4 & libadwaita (GUI).
